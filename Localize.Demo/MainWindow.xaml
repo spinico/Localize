@@ -1,0 +1,171 @@
+<Window x:Class="Localize.Demo.MainWindow" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:clr="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:Localize.Demo"        
+        Localize.DefaultResource="Localize.Demo.MainWindow"
+        Language="{Language}"
+        Title="{Localize mainWindowTitle}" 
+        Icon="{Localize languageIcon}"             
+        Height="600" Width="600"    
+        WindowStartupLocation="CenterScreen" 
+        Loaded="Main_Loaded">
+
+    <Window.Resources>
+        <ResourceDictionary>            
+            <clr:String x:Key="MainWindowResx">Localize.Demo.MainWindow</clr:String>
+            <clr:String x:Key="ExtensionFeaturesResx">Localize.Demo.Resources.Features</clr:String>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid>        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="Auto"/>            
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+                
+        <Menu VerticalAlignment="Top" Grid.Row="0">
+            <MenuItem Header="{Localize languageMenuItem}">
+                <MenuItem Header="{Localize englishMenuItem}" IsCheckable="True" Name="englishMenuItem" Click="englishMenuItem_Click" />
+                <MenuItem Header="{Localize frenchMenuItem}" Name="frenchMenuItem" Click="frenchMenuItem_Click" />
+            </MenuItem>
+        </Menu>
+
+        <RichTextBox Grid.Row="1" Margin="6,6,6,10" IsReadOnly="True" BorderThickness="0" Focusable="False"  Localize.DefaultResource="{StaticResource ExtensionFeaturesResx}">
+            <FlowDocument>
+                <Paragraph>
+                    <Bold>
+                        <Run Text="{Localize demoInformations}"/>
+                    </Bold>                    
+                </Paragraph>
+                <List MarkerStyle="Disc">
+                    <ListItem>
+                        <Paragraph Foreground="Blue">
+                            <Run Text="{Localize resourcesSupport}"/>
+                        </Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph Foreground="Blue">
+                            <Run Text="{Localize liveCultureUpdate}"/>
+                        </Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph Foreground="Blue">
+                            <Run Text="{Localize bindingToQuantity}"/>
+                        </Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph Foreground="Blue">
+                            <Run Text="{Localize multipleResourceFiles}"/>
+                        </Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph Foreground="Blue">
+                            <Run Text="{Localize nestedExtension}"/>
+                        </Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph Foreground="Blue">
+                            <Run Text="{Localize stringCaseFormat}"/>
+                        </Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph Foreground="Blue">
+                            <Run Text="{Localize simpleExtension}"/>
+                        </Paragraph>
+                    </ListItem>                    
+                </List>
+            </FlowDocument>
+        </RichTextBox>
+       
+        <ListView Name="furnitureListView"  Grid.Row="2">
+
+            <ListView.ItemsSource>
+                <!-- Create an array of furniture objects -->
+                <x:Array Type="{x:Type local:Furniture}" >
+                    <!-- Instantiate sample furniture objects and add to the array -->
+                    <local:Furniture Quantity="-1" Picture="{Localize Chair, Resource={StaticResource MainWindowResx}}" Name="{Localize nameChair, Resource={StaticResource MainWindowResx}}" Description="{Localize descriptionChair, Resource={StaticResource MainWindowResx}}"/>
+                    <local:Furniture Quantity="0"  Picture="{Localize Table}" Name="{Localize nameTable}" Description="{Localize descriptionTable}"/>
+                    <local:Furniture Quantity="1"  Picture="{Localize Stool}" Name="{Localize nameStool}" Description="{Localize descriptionStool}"/>
+                    <local:Furniture Quantity="2"  Picture="{Localize Sofa}"  Name="{Localize nameSofa}" />
+                    <local:Furniture               Picture="{Localize Sofa}"  Name="{Localize nameSofa}" Description="{Localize descriptionSofa}" />
+                </x:Array>
+            </ListView.ItemsSource>
+            
+            <ListView.View>
+                <GridView AllowsColumnReorder="False">
+
+                    <GridViewColumn>
+                        <GridViewColumnHeader Content="{Localize nameHeader}" HorizontalContentAlignment="Left" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    
+                    <GridViewColumn>
+                        <GridViewColumnHeader Content="{Localize quantityHeader}" HorizontalContentAlignment="Left" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Localize.DefaultResource="Localize.Demo.Resources.Stock">
+                                    <TextBlock Text="{Localize 
+                                        Key=lastOne, BindTo={Binding Quantity}, 
+                                        EmptyKey=stockEmpty, 
+                                        NegativeKey=backOrder, 
+                                        PluralKey=inStock, 
+                                        NullKey=infoUnavailable}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>                        
+                    </GridViewColumn>                    
+                    
+                    <GridViewColumn>
+                        <GridViewColumnHeader Content="{Localize descriptionHeader}" HorizontalContentAlignment="Left" />
+
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Description}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn>
+                        <GridViewColumnHeader Content="{Localize imagesHeader, CaseFormat=Title}" HorizontalContentAlignment="Center" />
+
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="100" Height="50" Source="{Binding Picture}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    
+                </GridView>
+            </ListView.View>           
+            
+        </ListView>
+
+        <TextBlock Grid.Row="3" Margin="6" >
+            <TextBlock.Text>
+                <Localize Key="currentSelectionText" BindTo="{Binding Path=SelectedItem.Name, ElementName=furnitureListView}" NullKey="currentSelectionNullText">
+                    <Localize Key="currentDescriptionText" BindTo="{Binding Path=SelectedItem.Description, ElementName=furnitureListView}" NullKey="currentDescriptionNullText" CaseFormat="Lower">
+                        <Localize Key="currentQuantityText" BindTo="{Binding Path=SelectedItem.Quantity, ElementName=furnitureListView}" 
+                                  PluralKey="currentQuantityPluralText"
+                                  NegativeKey="currentQuantityNegativeText"
+                                  EmptyKey="currentQuantityEmptyText"
+                                  NullKey="currentQuantityNullText" />
+                    </Localize>
+                </Localize>
+            </TextBlock.Text>
+        </TextBlock>
+    </Grid>
+
+</Window>
