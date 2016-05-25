@@ -1,6 +1,6 @@
+![Localize WPF extension][logo] ***Localize***
+=======
 
-![Localize WPF extension][logo]***Localize***
-------------
 A WPF extension for resources localization. 
 
 #### **Basic usage for string resources**
@@ -15,7 +15,7 @@ To localize a string resource in a WPF application:
 	<TextBlock Text="{Localize MyString}"/>
 	```
 
- 6. Now the TextBlock should display the string resource for the current thread culture in design mode in Visual Studio. At runtime, set the `CultureManager.CurrentCulture` property to one of your defined resource culture, for example:
+ 6. To switch culture at runtime, set the `CultureManager.CurrentCulture` property to one of your defined resource culture, for example:
  ```
 CultureManager.CurrentCulture = new CultureInfo("fr");
  ```
