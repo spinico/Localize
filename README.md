@@ -1,4 +1,5 @@
-![Localize WPF extension][logo] ***Localize***
+
+![Localize WPF extension][logo] **Localize**
 =======
 
 A WPF extension for resources localization. 
