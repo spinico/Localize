@@ -23,7 +23,7 @@ CultureManager.CurrentCulture = new CultureInfo("fr");
 
 
 #### **Sample application**
-The sample application shows most of the features available.
+The sample application shows most of the features.
 
 ![Sample application preview](https://github.com/spinico/Localize/blob/master/Images/demo.gif?raw=true)
 
