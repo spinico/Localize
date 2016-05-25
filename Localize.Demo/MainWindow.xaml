@@ -27,7 +27,7 @@
         </Grid.RowDefinitions>
                 
         <Menu VerticalAlignment="Top" Grid.Row="0">
-            <MenuItem Header="{Localize languageMenuItem}">
+            <MenuItem Header="{Localize languageMenuItem, CaseFormat=Upper}">
                 <MenuItem Header="{Localize englishMenuItem}" IsCheckable="True" Name="englishMenuItem" Click="englishMenuItem_Click" />
                 <MenuItem Header="{Localize frenchMenuItem}" Name="frenchMenuItem" Click="frenchMenuItem_Click" />
             </MenuItem>
