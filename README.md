@@ -2,7 +2,7 @@
 ![Localize WPF extension][logo] **Localize**
 =======
 
-A WPF extension for resources localization. 
+WPF extension for resources localization. 
 
 #### **Basic usage for string resources**
 To localize a string resource in a WPF application:
