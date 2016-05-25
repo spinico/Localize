@@ -159,7 +159,7 @@
     <EmbeddedResource Include="Resources\Features.fr.resx">
       <DependentUpon>Features.resx</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Features.resx"/>
+    <EmbeddedResource Include="Resources\Features.resx" />
     <EmbeddedResource Include="Resources\Stock.fr.resx">
       <DependentUpon>Stock.resx</DependentUpon>
     </EmbeddedResource>
@@ -225,6 +225,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\red-table.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\demo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
