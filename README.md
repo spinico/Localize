@@ -14,7 +14,7 @@ To localize a string resource in a WPF application:
 
  1. Create a default resource file (ex. `resources.resx`) in your solution.
  2. Add a string resource to it (ex. MyString = "Hello World!")
- 3. Add another resource file for a new culture (ex. fr) using the same name but using the specified culture as a suffix (ex. `resources.fr.resx`)
+ 3. Add another resource file for a specific culture (ex. fr) using the same name with the culture as a suffix (ex. `resources.fr.resx`)
  4. Add the localized string to this second resource file (ex. MyString = "Bonjour le monde!")
  5. In a XAML file, add the `Localize.DefaultResource` attribute to the root element (usually on a Window or UserControl) and set it to the name (including namespace) of your default resource file without the extension. For example, an application having the namespace "MyApplication" would look like:	
 	```
