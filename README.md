@@ -20,7 +20,7 @@ To localize a string resource in a WPF application:
 	```
 	<Window ...
 	Localize.DefaultResource="MyApplication.resources"
-	/>
+	>
 	```
 	
  6. Now declare a `TextBlock` control in your XAML and set its `Text` property using the `Localize` extension: 
