@@ -16,7 +16,7 @@
         public int Index { get; private set; }        
 
         public BindingNode(MultiBinding multiBinding)
-            : this(null , - 1)
+            : this(null, -1)
         {
             this.MultiBinding = multiBinding;            
         }
