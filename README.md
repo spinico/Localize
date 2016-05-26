@@ -27,15 +27,15 @@ To localize a string resource in a WPF application:
 	```
 	<TextBlock Text="{Localize MyString}"/>
 	```
-This is equivalent to:
- ```
+	This is equivalent to:
+	```
 	<TextBlock Text="{Localize MyString, Resource=MyApplication.resources}"/>
- ```
-	Since a default resource was previously set on the root element, there is no need to specify a Resource attribute explicitly on a child element (unless the resources file differs).
+	```
+	Since a default resource was previously set on the root element, there is no need to specify a *Resource* attribute explicitly on a child element (unless the resources file differs).
  7. To switch culture at runtime, set the `CultureManager.CurrentCulture` property to one of your defined resource culture, for example:
- ```
-CultureManager.CurrentCulture = new CultureInfo("fr");
- ```
+	```
+	CultureManager.CurrentCulture = new CultureInfo("fr");
+	```
 
 ----------
 The MIT License (MIT)
