@@ -2,7 +2,7 @@
 ![Localize WPF extension][logo] **Localize**
 =======
 
-A WPF extension for resources localization. 
+WPF extension for resources localization. 
 
 #### **Sample application**
 The sample application shows how to use most of the features.
@@ -33,6 +33,7 @@ To localize a string resource in a WPF application:
 	```
 	Since a default resource was previously set on the root element, there is no need to specify a *Resource* attribute explicitly on a child element (unless the resources file differs).
  7. To switch culture at runtime, set the `CultureManager.CurrentCulture` property to one of your defined resource culture, for example:
+
 	```
 	CultureManager.CurrentCulture = new CultureInfo("fr");
 	```
