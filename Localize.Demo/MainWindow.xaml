@@ -21,6 +21,7 @@
     <Grid>        
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>            
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -33,13 +34,50 @@
             </MenuItem>
         </Menu>
 
-        <RichTextBox Grid.Row="1" Margin="6,6,6,10" IsReadOnly="True" BorderThickness="0" Focusable="False"  Localize.DefaultResource="{StaticResource ExtensionFeaturesResx}">
+        <Grid Grid.Row="1" Margin="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- 
+                A Storyboard hack to circumvent the Style limitation where only DynamicResourceExtension 
+                type are allowed on CLR property Setter, Trigger and Condition
+                        
+                By using a StoryBoard, this takes precedence over the local Source value.
+                This way, it is possible to update a localized resource image on a user event.
+            
+                Remark: the DiscreteObjectKeyFrame dependency property is sealed and cannot be updated, 
+                        this makes the resource set once to the initial culture
+            -->
+            <Image Grid.Column="0" Source="{Localize LogoActive}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0">                               
+                <Image.Style>                    
+                    <Style TargetType="{x:Type Image}">                       
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard Name="SealedSetterHack">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Image.Source)" Duration="0">
+                                                <DiscreteObjectKeyFrame Value="{Localize LogoInactive, Resource={StaticResource MainWindowResx}}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <RemoveStoryboard BeginStoryboardName="SealedSetterHack"/>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+            <TextBlock Grid.Column="1" Margin="10,0,10,0" FontWeight="Bold" TextWrapping="WrapWithOverflow" Text="{Localize demoInformations, Resource={StaticResource ExtensionFeaturesResx}}"/>
+        </Grid>
+        
+        <RichTextBox Grid.Row="2" Margin="6,6,6,10" IsReadOnly="True" BorderThickness="0" Focusable="False"  Localize.DefaultResource="{StaticResource ExtensionFeaturesResx}">
             <FlowDocument>
-                <Paragraph>
-                    <Bold>
-                        <Run Text="{Localize demoInformations}"/>
-                    </Bold>                    
-                </Paragraph>
                 <List MarkerStyle="Disc">
                     <ListItem>
                         <Paragraph Foreground="Blue">
@@ -80,12 +118,12 @@
             </FlowDocument>
         </RichTextBox>
        
-        <ListView Name="furnitureListView"  Grid.Row="2">
+        <ListView Name="furnitureListView"  Grid.Row="3">
 
             <ListView.ItemsSource>
-                <!-- Create an array of furniture objects -->
+                <!-- Create an array of sample furniture objects and add to the array -->
                 <x:Array Type="{x:Type local:Furniture}" >
-                    <!-- Instantiate sample furniture objects and add to the array -->
+                    <!-- When specifying Resource explicitly, the result gets shown in Design mode -->
                     <local:Furniture Quantity="-1" Picture="{Localize Chair, Resource={StaticResource MainWindowResx}}" Name="{Localize nameChair, Resource={StaticResource MainWindowResx}}" Description="{Localize descriptionChair, Resource={StaticResource MainWindowResx}}"/>
                     <local:Furniture Quantity="0"  Picture="{Localize Table}" Name="{Localize nameTable}" Description="{Localize descriptionTable}"/>
                     <local:Furniture Quantity="1"  Picture="{Localize Stool}" Name="{Localize nameStool}" Description="{Localize descriptionStool}"/>
@@ -153,7 +191,7 @@
             
         </ListView>
 
-        <TextBlock Grid.Row="3" Margin="6" >
+        <TextBlock Grid.Row="4" Margin="6" >
             <TextBlock.Text>
                 <Localize Key="currentSelectionText" BindTo="{Binding Path=SelectedItem.Name, ElementName=furnitureListView}" NullKey="currentSelectionNullText">
                     <Localize Key="currentDescriptionText" BindTo="{Binding Path=SelectedItem.Description, ElementName=furnitureListView}" NullKey="currentDescriptionNullText" CaseFormat="Lower">

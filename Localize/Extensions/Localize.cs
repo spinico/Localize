@@ -351,8 +351,8 @@
         /// <param name="key">The key used to get the value from the resources</param>
         public Localize(string key) 
             : base(_manager)
-        {
-            _key = key;
+        {           
+            _key = key;            
         }
 
         #region ILocalize
@@ -909,12 +909,11 @@
         private static object ConvertTo(Type targetType, object instance)
         {
             object value = null;
-            BitmapSource bitmapSource = null;
 
-            // Convert icons and bitmaps to BitmapSource objects that WPF uses
+            // Convert icons and bitmaps to BitmapSource objects that WPF can use
             if (instance is Icon)
             {
-                Icon icon = instance as Icon;
+                var icon = instance as Icon;
 
                 // For icons we must create a new BitmapFrame from the icon data stream
                 // The approach we use for bitmaps (below) doesn't work when setting the
@@ -923,35 +922,35 @@
                 {
                     icon.Save(iconStream);
                     iconStream.Seek(0, SeekOrigin.Begin);
-                    bitmapSource = BitmapFrame.Create(iconStream);
+                    BitmapSource bitmapSource = BitmapFrame.Create(iconStream);
+
+                    // If the target property is expecting the Icon to be content, 
+                    // create an ImageControl and set its Source property 
+                    if (targetType == typeof(object))
+                    {
+                        var imageControl = new System.Windows.Controls.Image();
+                        imageControl.Source = bitmapSource;
+                        imageControl.Width = bitmapSource.Width;
+                        imageControl.Height = bitmapSource.Height;
+
+                        value = imageControl;
+                    }
+                    else
+                    {
+                        value = bitmapSource;
+                    }
                 }
             }
             else if (instance is Bitmap)
             {
                 Bitmap bitmap = instance as Bitmap;
                 IntPtr bitmapHandle = bitmap.GetHbitmap();
-                bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(bitmapHandle, IntPtr.Zero, Int32Rect.Empty,
+                BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(bitmapHandle, IntPtr.Zero, Int32Rect.Empty,
                                                                      BitmapSizeOptions.FromEmptyOptions());
                 bitmapSource.Freeze();
                 DeleteObject(bitmapHandle);
-            }
 
-            if (bitmapSource != null)
-            {
-                // If the target property is expecting the Icon to be content then we
-                // create an ImageControl and set its Source property to image
-                if (targetType == typeof(object))
-                {
-                    System.Windows.Controls.Image imageControl = new System.Windows.Controls.Image();
-                    imageControl.Source = bitmapSource;
-                    imageControl.Width = bitmapSource.Width;
-                    imageControl.Height = bitmapSource.Height;
-                    value = imageControl;
-                }
-                else
-                {
-                    value = bitmapSource;
-                }
+                value = bitmapSource;
             }
             else
             {
