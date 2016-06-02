@@ -23,7 +23,7 @@ namespace Spinico.Localize
     /// target being garbage collected.  
     /// </remarks>
     public abstract class ManagedExtension : MarkupExtension
-    {
+    {        
         /// <summary>
         /// List of weak reference to the target DependencyObjects 
         /// to allow them to be garbage collected
@@ -60,6 +60,7 @@ namespace Spinico.Localize
         /// <summary>
         /// Create a new instance of the markup extension
         /// </summary>
+        /// <param name="manager"></param>
         public ManagedExtension(ExtensionManager manager)
         {
             manager.Register(this);
@@ -251,15 +252,23 @@ namespace Spinico.Localize
         {
             if (_targetProperty is DependencyProperty)
             {
-                DependencyObject dependencyObject = target as DependencyObject;
-                if (dependencyObject != null)
+                var dependencyObject = target as DependencyObject;
+
+                // Make sure the dependency object is updatable (not sealed)
+                if (dependencyObject != null && !dependencyObject.IsSealed)
                 {
                     dependencyObject.SetValue(_targetProperty as DependencyProperty, GetValue());
                 }
             }
             else if (_targetProperty is PropertyInfo)
             {
-                (_targetProperty as PropertyInfo).SetValue(target, GetValue(), null);
+                // After a 'SetterBase' is in use (sealed), it cannot be modified.  
+                if (!(target is SetterBase))
+                {
+                    var propertyInfo = _targetProperty as PropertyInfo;
+
+                    propertyInfo.SetValue(target, GetValue(), null);
+                }               
             }
         }
 
