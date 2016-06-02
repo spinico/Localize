@@ -4,6 +4,9 @@
 
 WPF extension for resources localization. 
 
+#### **Last update**
+Added simple example of mouse over event using localized image. 
+
 #### **Sample application**
 The sample application shows how to use most of the features.
 
